@@ -8,21 +8,21 @@
 // Function prototypes
 void keyboardInput(GLFWwindow *window);
 
-int main( void )
+int main(void)
 {
     // =========================================================================
     // Window creation - you shouldn't need to change this code
     // -------------------------------------------------------------------------
     // Initialise GLFW
-    if( !glfwInit() )
+    if (!glfwInit())
     {
-        fprintf( stderr, "Failed to initialize GLFW\n" );
+        fprintf(stderr, "Failed to initialize GLFW\n");
         getchar();
         return -1;
     }
 
     glfwWindowHint(GLFW_SAMPLES, 4);
-    glfwWindowHint(GLFW_RESIZABLE,GL_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -31,8 +31,8 @@ int main( void )
     // Open a window and create its OpenGL context
     GLFWwindow* window;
     window = glfwCreateWindow(1024, 768, "Lab02 Basic Shapes", NULL, NULL);
-    
-    if( window == NULL ){
+
+    if (window == NULL) {
         fprintf(stderr, "Failed to open GLFW window.\n");
         getchar();
         glfwTerminate();
@@ -51,9 +51,24 @@ int main( void )
     // -------------------------------------------------------------------------
     // End of window creation
     // =========================================================================
-    
-	// Ensure we can capture keyboard inputs
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+
+    // Ensure we can capture keyboard inputs
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+
+    const float verticies [] = { // define vertices 
+        // x      y     z
+       -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.0f,  0.5f, 0.0f
+}; 
+    unsigned int VAO; // create the vertex array object (VAO) 
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO); 
+
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     
     // Render loop
 	while (!glfwWindowShouldClose(window))
