@@ -4,5 +4,6 @@ layout(location = 0) in vec3 position;
 
 void main()
 {
-gl_Position = vec4(position, 1.0); // output vertex position 
+    // Output vertex position
+    gl_Position = vec4(position, 1.0);
 }

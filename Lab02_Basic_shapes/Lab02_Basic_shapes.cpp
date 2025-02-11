@@ -55,20 +55,29 @@ int main(void)
     // Ensure we can capture keyboard inputs
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-    const float verticies [] = { // define vertices 
+    const float vertices [] = { // define vertices 
         // x      y     z
        -0.5f, -0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
         0.0f,  0.5f, 0.0f
 }; 
-    unsigned int VAO; // create the vertex array object (VAO) 
+    // Create the Vertex Array Object (VAO)
+    unsigned int VAO;
     glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO); 
+    glBindVertexArray(VAO);
 
+    // Create Vertex Buffer Object (VBO)
     unsigned int VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Compile shader program
+    unsigned int shaderID = LoadShaders("vertexShader.glsl", "fragmentShader.glsl");
+
+    // Use the shader program
+    glUseProgram(shaderID);
+     
     
     // Render loop
 	while (!glfwWindowShouldClose(window))
@@ -80,6 +89,20 @@ int main(void)
         glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
+        // Send the VBO to the shaders
+        glEnableVertexAttribArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glVertexAttribPointer(0,         // attribute has to be the same as "layout (location...) in VertexShader.glsl
+            3,         // size
+            GL_FLOAT,  // type
+            GL_FALSE,  // normalise?
+            0,         // stride
+            (void*)0); // offset
+
+        // Draw the triangle
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDisableVertexAttribArray(0);
+
 		// Swap buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
