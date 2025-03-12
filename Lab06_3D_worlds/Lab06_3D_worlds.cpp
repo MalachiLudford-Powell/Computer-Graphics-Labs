@@ -226,6 +226,15 @@ int main( void )
         glm::mat4 rotate = Maths::rotate(angle, glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 model = translate * rotate * scale;
 
+        // Calculate the view matrix
+        glm::mat4 view = glm::lookAt(glm::vec3(1.0f, 1.0f, 1.0f),  // eye
+            glm::vec3(0.0f, 0.0f, -2.0f), // target
+            glm::vec3(0.0f, 1.0f, 0.0f)); // worldUp
+        
+        
+        // Calculate orthographic projection matrix
+        glm::mat4 projection = glm::ortho(-2.0f, 2.0f, -2.0f, 2.0f, 0.0f, 10.0f);
+
         // Draw the triangles
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(unsigned int), GL_UNSIGNED_INT, 0);
